@@ -63,3 +63,39 @@ def index_data(query: str, collection_name: str):
 
     except Exception as e:
         return f"Error al guardar información: {str(e)}"
+
+
+def retrieval(query: str, collection_name: str, k: int = 5):
+    """
+    Herramienta para recuperar información de una base de datos vectorial.
+
+    Args:
+        query: consulta que se desea buscar.
+        collection_name: nombre de la colección donde buscar.
+        k: cantidad máxima de resultados.
+    """
+    try:
+        if not query or not query.strip():
+            return "Error: la consulta no puede estar vacía."
+
+        if not collection_name or not collection_name.strip():
+            return "Error: debe indicar un nombre de colección."
+
+        if k < 1:
+            return "Error: k debe ser mayor que cero."
+
+        vector_store = Chroma(
+            embedding_function=OllamaEmbeddings(model="nomic-embed-text"),
+            persist_directory="./vector_store",
+            collection_name=collection_name,
+        )
+
+        results = vector_store.similarity_search_with_relevance_scores(query=query, k=k)
+
+        if not results:
+            return "No se encontró información relacionada."
+
+        return results
+
+    except Exception as e:
+        return f"Error al recuperar información: {str(e)}"

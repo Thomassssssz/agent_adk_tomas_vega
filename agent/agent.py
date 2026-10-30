@@ -5,7 +5,7 @@ os.environ["OLLAMA_API_BASE"] = "http://localhost:11434"
 from google.adk.agents.llm_agent import Agent
 from google.adk.models.lite_llm import LiteLlm
 
-from .tools.tools import web_search, index_data
+from .tools.tools import web_search, index_data, retrieval
 
 
 root_agent = Agent(
@@ -28,6 +28,9 @@ root_agent = Agent(
     informa claramente al usuario.
 
     Respondé de forma clara y sencilla.
+
+    Cuando el usuario consulte información guardada previamente,
+    utiliza la herramienta retrieval.
     """,
-    tools=[web_search, index_data],
+    tools=[web_search, index_data, retrieval],
 )
