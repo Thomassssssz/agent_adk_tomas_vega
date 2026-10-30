@@ -2,6 +2,7 @@ from ddgs import DDGS
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+import chromadb
 
 
 def web_search(query: str, max_results: int = 5):
@@ -99,3 +100,24 @@ def retrieval(query: str, collection_name: str, k: int = 5):
 
     except Exception as e:
         return f"Error al recuperar información: {str(e)}"
+
+    import chromadb
+
+
+def list_collection():
+    """
+    Herramienta para listar las colecciones disponibles
+    en la base de datos vectorial.
+    """
+    try:
+        client = chromadb.PersistentClient(path="./vector_store")
+
+        collections = client.list_collections()
+
+        if not collections:
+            return "No hay colecciones disponibles."
+
+        return [collection.name for collection in collections]
+
+    except Exception as e:
+        return f"Error al listar colecciones: {str(e)}"
