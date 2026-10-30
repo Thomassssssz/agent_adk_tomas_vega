@@ -5,7 +5,7 @@ os.environ["OLLAMA_API_BASE"] = "http://localhost:11434"
 from google.adk.agents.llm_agent import Agent
 from google.adk.models.lite_llm import LiteLlm
 
-from .tools.tools import web_search
+from .tools.tools import web_search, index_data
 
 
 root_agent = Agent(
@@ -21,10 +21,13 @@ root_agent = Agent(
     Cuando una pregunta necesite información actualizada de internet,
     utiliza la herramienta web_search.
 
-    Si la herramienta devuelve un error o no encuentra resultados,
+    Cuando el usuario solicite guardar información o un apunte,
+    utiliza la herramienta index_data.
+
+    Si alguna herramienta devuelve un error o no encuentra resultados,
     informa claramente al usuario.
 
     Respondé de forma clara y sencilla.
     """,
-    tools=[web_search],
+    tools=[web_search, index_data],
 )
